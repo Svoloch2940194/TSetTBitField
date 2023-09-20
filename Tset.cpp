@@ -1,12 +1,14 @@
 #include "Tset.h"
 
-TSet::TSet()
+TSet::TSet() noexcept
 {
 	MaxPower = 0;
 }
 
 TSet::TSet(int np)
 {
+	if (np < 0) throw out_of_range("size should be greater than zero");
+	if (np == 0) TSet();
 	MaxPower = np;
 	TBitField x(np);
 	BitField = x;
@@ -37,16 +39,19 @@ int TSet::GetMaxPower() const
 
 void TSet::InsElem(const int Elem)
 {
+	if (Elem >= GetMaxPower() || Elem < 0) throw out_of_range("Element should belong to this set");
 	BitField.SetBit(Elem);
 }
 
 void TSet::DelElem(const int Elem)
 {
+	if (Elem >= GetMaxPower() || Elem < 0) throw out_of_range("Element should belong to this set");
 	BitField.ClrBit(Elem);
 }
 
 int TSet::IsMember(const int Elem) const
 {
+	if (Elem >= GetMaxPower() || Elem < 0) throw out_of_range("Element should belong to this set");
 	return BitField.GetBit(Elem) == 1;
 }
 
@@ -69,6 +74,7 @@ TSet& TSet::operator=(const TSet& s)
 
 TSet TSet::operator+(const int Elem)
 {
+	if (Elem >= GetMaxPower() || Elem < 0) throw out_of_range("Element should belong to this set");
 	TSet x(MaxPower);
 	for (int i = 0; i < MaxPower; ++i)
 	{
@@ -79,6 +85,7 @@ TSet TSet::operator+(const int Elem)
 
 TSet TSet::operator- (const int Elem)
 {
+	if (Elem >= GetMaxPower() || Elem < 0) throw out_of_range("Element should belong to this set");
 	TSet x(MaxPower);
 	for (int i = 0; i < MaxPower; ++i)
 	{

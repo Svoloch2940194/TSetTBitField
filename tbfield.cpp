@@ -10,7 +10,7 @@ TELEM TBitField::GetMemMask(const int n) const
 	return 1 << (n % (sizeof(TELEM) * 8));
 }
 
-TBitField::TBitField()
+TBitField::TBitField() noexcept
 {
 	BitLen = 0;
 	MemLen = 0;
@@ -19,6 +19,8 @@ TBitField::TBitField()
 
 TBitField::TBitField(int len)
 {
+	if (len < 0) throw out_of_range("Size should be greater than zero");
+	if (len == 0) TBitField();
 	BitLen = len;
 	MemLen = GetMemIndex(BitLen) + 1 * (BitLen % (sizeof(TELEM) * 8) != 0);
 	pMem = new TELEM[MemLen];
@@ -52,16 +54,22 @@ int TBitField::GetLength() const
 
 void TBitField::SetBit(const int n)
 {
+	if (n < 0) throw out_of_range("index should be greater or eqals than zero");
+	if (n >= GetLength()) throw out_of_range("index should be less than length of erray");
 	pMem[GetMemIndex(n)] |= GetMemMask(n);
 }
 
 void TBitField::ClrBit(const int n)
 {
+	if (n < 0) throw out_of_range("index should be greater or eqals than zero");
+	if (n >= GetLength()) throw out_of_range("index should be less than length of erray");
 	pMem[GetMemIndex(n)] &= ~GetMemMask(n);
 }
 
 int TBitField::GetBit(const int n) const
 {
+	if (n < 0) throw out_of_range("index should be greater or eqals than zero");
+	if (n >= GetLength()) throw out_of_range("index should be less than length of erray");
 	return (pMem[GetMemIndex(n)] & GetMemMask(n)) != 0;
 }
 

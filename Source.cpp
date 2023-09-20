@@ -3,41 +3,20 @@
 
 int main()
 {
-	TBitField x(80);
-	TBitField y(80);
-	/*
-	for (int i = 0; i < 80; ++i)
-	{
-		if (!(i % 2)) x.SetBit(i);
+	TSet x(100);
+	try {
+		x.DelElem(-1);
 	}
-
-	for (int i = 0; i < 80; ++i)
+	catch (out_of_range x) { cout << x.what() << endl; }
+	for (int i = 0; i < 100; ++i) x.InsElem(i);
+	x.DelElem(0);
+	x.DelElem(1);
+	for (int i = 0; i < 100; ++i)
 	{
-
-		if (!(i % 2)) y.ClrBit(i);
-		else y.SetBit(i);
+		if (x.IsMember(i))
+		{
+			for (int j = i * i; j < 100; j += i) x.DelElem(j);
+		}
 	}
-	*/
-	TBitField z(80);
-
-	TSet xx(80);
-
-	for (int i = 0; i < 80; ++i)
-	{
-		if (!(i % 2)) xx.InsElem(i);
-	}
-
-	TSet yy = ~xx;
-
-	//z = x | y;
-	cout << xx << endl;
-	cout << yy << endl;
-	//cout << xx * yy << endl;
-	//cout << xx << endl;
-	cout << ~(xx * yy) << endl;
-	cout << (xx == xx) << endl;
-	//cout << y << endl;
-	//cout << z << endl;
-	//z = x & ~x;
-	//cout << z << endl;
+	cout << x << endl;
 }
